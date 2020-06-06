@@ -3,7 +3,8 @@
 
 <head>
     <title>Fast Neural Style Transfer</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" rel="stylesheet">
     <style type="text/css">
         body {
@@ -14,19 +15,23 @@
             font-family: 'Julius Sans One', sans-serif;
         }
 
-		.main-container {
-			margin-right: 3rem;
-			margin-left: 3rem;
-		}
+        .main-container {
+            margin-right: 3rem;
+            margin-left: 3rem;
+        }
 
         #styles {
-            background-color: #fff;
             max-height: 34rem;
             overflow: scroll;
         }
 
         a {
             text-decoration: none !important;
+        }
+
+        .card:hover {
+            border: 6px solid rgb(0, 0, 104);
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -37,39 +42,35 @@
         <img style="border-radius: 35px;" class="float-left" height="75" src="/media/tesla.jpg" />
         <h1 class="mt-5 text-md-right">Fast Neural Style Transfer</h1>
         <br>
-		<div class="row bg-light p-3 rounded-lg main-content mt-2">
+        <div class="row bg-light p-3 rounded-lg main-content mt-2">
 
-			<div class="col-9">
+            <div class="col-9">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="file" name="content">
                     <br><br>
-                    <button class="btn btn-dark" type="submit">Upload</button> 
+                    <button class="btn btn-dark" type="submit">Upload</button>
                     <br>
                 </form>
-            
+                
                 <div class="row">
-                    <div class="col">
+                    <div class="col" id="content">
                         {% if content %}
-                            <img style="width: 100%;" class="mt-5 align-center" src="/media/content/{{ content }}" />
+                        <img style="width: 100%;" class="mt-5 align-center" src="/media/content/{{ content }}" />
                         {% else %}
-                            <img style="width: 100%;" class="mt-5 align-center" src="/media/placeholder.jpg" />
+                        <img style="width: 100%;" class="mt-5 align-center" src="/media/placeholder.jpg" />
                         {% endif %}
                     </div>
                     <div class="col">
-                        {% if content %}
-                            <img style="width: 100%;" class="mt-5 align-center" src="/media/content/{{ content }}" />
-                        {% else %}
-                            <img style="width: 100%;" class="mt-5 align-center" src="/media/placeholder.jpg" />
-                        {% endif %}
+                        <img style="width: 100%;" id="result" class="mt-5 align-center" src="/media/placeholder.jpg" />
                     </div>
                 </div>
-			</div>
+            </div>
 
             <div class="col" id="styles">
                 {% for style in styles.all %}
                 <a href="#">
-                    <div class="card bg-dark text-white mt-2 mb-2">
+                    <div class="card bg-dark text-white mt-2 mb-2" data-styleid="{{ style.id }}">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ style.name }}</h5>
                         </div>
@@ -78,17 +79,45 @@
                 </a>
                 {% endfor %}
             </div>
-		</div>
+        </div>
     </div>
 
     <footer class="mt-5 mb-0 bg-light pt-3 pb-3">
         <div class="container">
             <p class="text-dark">Ebrahim Gabajiwala &copy;{% now "Y" %}</p>
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            $('.card').click(function(e) {
+                e.preventDefault();
+                var style_id,img;
+                styleid = $(this).attr("data-styleid");
+                img = "{{ content }}";
+                var req = $.ajax(
+                    {
+                        type: "GET",
+                        url: "/stylize",
+                        data: {
+                            style_id: styleid,
+                            img_name: img
+                        },
+                        success:function(data){
+                        $('#result').attr('src',data);
+                        console.log(data);
+                    }
+
+                });
+            });
+        </script>
     </footer>
 </body>
-
 </html>

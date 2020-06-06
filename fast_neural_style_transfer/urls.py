@@ -24,6 +24,7 @@ import style_transfer.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', style_transfer.views.home),
+    path('stylize/', style_transfer.views.apply_style_transfer)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
