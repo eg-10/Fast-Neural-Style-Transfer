@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 
 <head>
@@ -21,7 +22,7 @@
         }
 
         #styles {
-            max-height: 34rem;
+            max-height: 38rem;
             overflow: scroll;
         }
 
@@ -38,12 +39,20 @@
 
 <body>
     <div class="main-container">
-        <img style="border-radius: 35px;" class="float-left" height="75" src="/media/tesla.jpg" />
-        <img style="border-radius: 35px;" class="float-left" height="75" src="/media/tesla.jpg" />
-        <h1 class="mt-5 text-md-right">Fast Neural Style Transfer</h1>
+        <div class="row mt-5">
+            <div class="col-4">
+                <img style="border-radius: 35px;" class="float-left" height="125" src="{% static 'venice.jpg' %}" />
+                <img style="border-radius: 35px;" class="float-left m-2 mt-5" width="38" src="{% static 'arrow.png' %}" />
+                <img style="border-radius: 35px;" class="float-left" height="125" src="{% static 'result_venice.jpg' %}" />
+            </div>
+            <div class="col-8">
+                <h1 class="align-middle mt-5 text-right">Fast Neural Style Transfer</h1>
+            </div>
+        </div>
+        
         <br>
         <div class="row bg-light p-3 rounded-lg main-content mt-2">
-
+        
             <div class="col-9">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -54,21 +63,21 @@
                 </form>
                 
                 <div class="row">
-                    <div class="col" id="content">
+                    <div class="col">
                         {% if content %}
-                        <img style="width: 100%;" class="mt-5 align-center" src="/media/content/{{ content }}" />
+                        <img style="width: 100%;" id="content" class="mt-5 align-center" src="/media/content/{{ content }}" />
                         {% else %}
-                        <img style="width: 100%;" class="mt-5 align-center" src="/media/placeholder.jpg" />
+                        <img style="width: 100%;" class="mt-5 align-center" src="{% static 'placeholder.jpg' %}" />
                         {% endif %}
                     </div>
                     <div class="col">
-                        <img style="width: 100%;" id="result" class="mt-5 align-center" src="/media/placeholder.jpg" />
+                        <img style="width: 100%;" id="result" class="mt-5 align-center" src="{% static 'placeholder.jpg' %}" />
                     </div>
                 </div>
             </div>
 
             <div class="col" id="styles">
-                {% for style in styles.all %}
+                {% for style in styles %}
                 <a href="#">
                     <div class="card bg-dark text-white mt-2 mb-2" data-styleid="{{ style.id }}">
                         <div class="card-body">
@@ -99,6 +108,8 @@
         <script type="text/javascript">
             $('.card').click(function(e) {
                 e.preventDefault();
+                $('#result').attr('src', "{% static 'loading.gif' %}");
+                $('#result').css('height', $('#content').height());
                 var style_id,img;
                 styleid = $(this).attr("data-styleid");
                 img = "{{ content }}";

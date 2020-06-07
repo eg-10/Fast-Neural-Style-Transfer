@@ -16,7 +16,7 @@ from stylize import stylize
 
 def home(request):
     content = None
-    styles = Style.objects
+    styles = Style.objects.all()
     if request.method == 'POST' and request.FILES['content']:
         content = request.FILES['content']
         fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 
